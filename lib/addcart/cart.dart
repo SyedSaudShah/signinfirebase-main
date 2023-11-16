@@ -5,11 +5,13 @@ class Cartitem {
   String name;
   num price;
   int quantity;
+  String productId;
   Cartitem({
     required this.img,
     required this.name,
     required this.price,
     this.quantity = 1,
+    required this.productId,
   });
 
   Cartitem copyWith({
@@ -19,6 +21,7 @@ class Cartitem {
     int? quantity,
   }) {
     return Cartitem(
+      productId: productId,
       img: img ?? this.img,
       name: name ?? this.name,
       price: price ?? this.price,
@@ -32,16 +35,17 @@ class Cartitem {
       'name': name,
       'price': price,
       'quantity': quantity,
+      'productId': productId
     };
   }
 
   factory Cartitem.fromMap(Map<String, dynamic> map) {
     return Cartitem(
-      img: map['img'],
-      name: map['name'],
-      price: map['price'],
-      quantity: map['quantity'],
-    );
+        img: map['img'],
+        name: map['name'],
+        price: map['price'],
+        quantity: map['quantity'],
+        productId: map['productId']);
   }
 
   String toJson() => json.encode(toMap());
@@ -51,7 +55,7 @@ class Cartitem {
 
   @override
   String toString() {
-    return 'Cartitem(img: $img, name: $name, price: $price, quantity: $quantity)';
+    return 'Cartitem(img: $img, name: $name, price: $price, quantity: $quantity,productId: $productId )';
   }
 
   @override
@@ -61,7 +65,8 @@ class Cartitem {
     return other.img == img &&
         other.name == name &&
         other.price == price &&
-        other.quantity == quantity;
+        other.quantity == quantity &&
+        other.productId == productId;
   }
 
   @override

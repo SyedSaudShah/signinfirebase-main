@@ -12,9 +12,9 @@ class HomeScreen extends StatefulWidget {
   createState() => _HomeScreenState();
 }
 
+final foodFirestore = FirebaseFirestore.instance.collection('food').snapshots();
+
 class _HomeScreenState extends State<HomeScreen> {
-  final foodFirestore =
-      FirebaseFirestore.instance.collection('food').snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,28 +58,27 @@ class _HomeScreenState extends State<HomeScreen> {
                               builder: (context) => CartLoadedStateWidget(
                                 img: getImage.img,
                                 name: getImage.name,
-                                price: getImage.price.toString(),
+                                price: getImage.price,
+                                quantity: 1,
+                                productId: getImage.id,
                               ),
                             ));
                       },
                       child: Column(
                         children: [
                           Center(
-                            child: Expanded(
-                              child: Card(
-                                elevation: 3,
-                                color: Colors.green,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: CircleAvatar(
-                                    radius: 50,
-                                    child: Image.network(
+                            child: Card(
+                              elevation: 3,
+                              color: Colors.green,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: CircleAvatar(
+                                  radius: 50,
+                                  child: Image.network(
                                       fit: BoxFit.cover,
                                       alignment: const Alignment(20, 20),
-                                      getImage.img,
-                                    ),
-                                  ),
+                                      getImage.img),
                                 ),
                               ),
                             ),

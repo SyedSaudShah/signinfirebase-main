@@ -1,60 +1,60 @@
-// // import 'package:cloud_firestore/cloud_firestore.dart';
-// // import 'package:flutter/material.dart';
-// // import 'package:signinfirebase/addcart/cart.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
+// import 'package:signinfirebase/addcart/cart.dart';
 
-// // class CartScreen extends StatefulWidget {
-// //   CartScreen({Key? key}) : super(key: key);
+// class CartScreen extends StatefulWidget {
+//   CartScreen({Key? key}) : super(key: key);
 
-// //   @override
-// //   State<CartScreen> createState() => _MyAppState();
-// // }
+//   @override
+//   State<CartScreen> createState() => _MyAppState();
+// }
 
-// // class _MyAppState extends State<CartScreen> {
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return MaterialApp(
-// //         debugShowCheckedModeBanner: false,
-// //         home: Scaffold(
-// //             appBar: AppBar(
-// //               backgroundColor: Colors.blue,
-// //               title: const Text('Cart Screen'),
-// //             ),
-// //             body: StreamBuilder(
-// //               stream:
-// //                   FirebaseFirestore.instance.collection('carts').snapshots(),
-// //               builder: (context, snapshot) {
-// //                 if (snapshot.connectionState == ConnectionState.waiting) {
-// //                   return const Center(child: CircularProgressIndicator());
-// //                 } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-// //                   return const Center(
-// //                     child: Text('Cart is empty.'),
-// //                   );
-// //                 } else if (snapshot.hasData) {
-// //                   return ListView.builder(
-// //                       itemCount: snapshot.data!.docs.length,
-// //                       itemBuilder: (context, index) {
-// //                         Cartitem cartitem =
-// //                             Cartitem.fromMap(snapshot.data!.docs[index].data());
-// //                         cartitem.img.toString();
-// //                         Text(cartitem.name[index].toString());
-// //                         Text(cartitem.price.toString());
-// //                         return ListView(
-// //                           children: snapshot.data!.docs.map((document) {
-// //                             var data = document.data() as Map<String, dynamic>;
-// //                             return ListTile(
-// //                               title: Text(data['item_name']),
-// //                               subtitle: Text('Price: ${data['item_price']}'),
-// //                             );
-// //                           }).toList(),
-// //                         );
-// //                       });
-// //                 } else {
-// //                   return const SizedBox();
-// //                 }
-// //               },
-// //             )));
-// //   }
-// // }
+// class _MyAppState extends State<CartScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         home: Scaffold(
+//             appBar: AppBar(
+//               backgroundColor: Colors.blue,
+//               title: const Text('Cart Screen'),
+//             ),
+//             body: StreamBuilder(
+//               stream:
+//                   FirebaseFirestore.instance.collection('carts').snapshots(),
+//               builder: (context, snapshot) {
+//                 if (snapshot.connectionState == ConnectionState.waiting) {
+//                   return const Center(child: CircularProgressIndicator());
+//                 } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+//                   return const Center(
+//                     child: Text('Cart is empty.'),
+//                   );
+//                 } else if (snapshot.hasData) {
+//                   return ListView.builder(
+//                       itemCount: snapshot.data!.docs.length,
+//                       itemBuilder: (context, index) {
+//                         Cartitem cartitem =
+//                             Cartitem.fromMap(snapshot.data!.docs[index].data());
+//                         cartitem.img.toString();
+//                         Text(cartitem.name[index].toString());
+//                         Text(cartitem.price.toString());
+//                         return ListView(
+//                           children: snapshot.data!.docs.map((document) {
+//                             var data = document.data() as Map<String, dynamic>;
+//                             return ListTile(
+//                               title: Text(data['item_name']),
+//                               subtitle: Text('Price: ${data['item_price']}'),
+//                             );
+//                           }).toList(),
+//                         );
+//                       });
+//                 } else {
+//                   return const SizedBox();
+//                 }
+//               },
+//             )));
+//   }
+// }
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:flutter/material.dart';
 
@@ -128,21 +128,19 @@
 //     );
 //   }
 // }
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:signinfirebase/addcart/cart.dart';
 
-// ignore: must_be_immutable
 class CartScreen extends StatelessWidget {
-  Stream<QuerySnapshot<Map<String, dynamic>>> data = FirebaseFirestore.instance
-      .collection('carts')
-      .doc()
-      .collection('items')
-      .snapshots();
-
-  final String userId = 'your_user_id';
-
-  CartScreen({super.key}); // Replace with the actual user's ID
+  const CartScreen({super.key});
+  Future<QuerySnapshot<Map<String, dynamic>>> getData() async {
+    return FirebaseFirestore.instance
+        .collection('carts')
+        .doc('userId')
+        .collection('items')
+        .get();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,38 +148,209 @@ class CartScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Cart'),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: data,
+      body: FutureBuilder<QuerySnapshot>(
+        future: getData(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          }
-
-          if (snapshot.data!.docs.isEmpty) {
+          } else if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
+          } else if (!snapshot.hasData || snapshot.data == null) {
             return const Center(
-              child: Text('Your cart is empty.'),
+              child: Text("No data available"),
+            );
+          } else {
+            print('Firestore Data: ${snapshot.data?.docs}');
+            var cartItems = snapshot.data!.docs;
+            // .map((doc) =>
+            //     Cartitem.fromMap(doc.data() as Map<String, dynamic>))
+            // .toList();
+            List<Cartitem> list = cartItems
+                .map((e) => Cartitem.fromMap(e.data() as Map<String, dynamic>))
+                .toList();
+
+            return ListView.builder(
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                print('firsttttttttttttttttttttttttttttttttt${cartItems}');
+                //  return Text(list[index].name);
+                return Row(
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(), color: Colors.amber),
+                          child: Image.network(
+                            list[index].img,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    Text(list[index].name),
+                    Spacer(),
+                    Text(list[index].price.toString()),
+                    Spacer(),
+                    Text(list[index].quantity.toString())
+                  ],
+                );
+              },
             );
           }
-
-          // Map the documents to CartItem objects
-          List<Cartitem> cartItems = snapshot.data!.docs
-              .map((doc) => Cartitem.fromJson(userId))
-              .toList();
-
-          return ListView.builder(
-            itemCount: cartItems.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(cartItems[index].name),
-                subtitle: Text('Price: \$${cartItems[index].price.toString()}'),
-                trailing: Text('Quantity: ${cartItems[index].quantity}'),
-              );
-            },
-          );
         },
       ),
     );
   }
 }
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
+// import 'package:signinfirebase/addcart/cart.dart';
+
+// // ignore: must_be_immutable
+// class CartScreen extends StatelessWidget {
+//   Stream<QuerySnapshot<Map<String, dynamic>>> getData() {
+//     Stream<QuerySnapshot<Map<String, dynamic>>> data = FirebaseFirestore
+//         .instance
+//         .collection('carts')
+//         .doc()
+//         .collection('items')
+//         .snapshots();
+//     print('dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$data');
+//     return data;
+//   }
+
+//   final String userId = 'your_user_id';
+
+//   CartScreen({super.key}); // Replace with the actual user's ID
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Cart'),
+//       ),
+//       body: StreamBuilder<QuerySnapshot>(
+//         stream: getData(),
+//         builder: (context, snapshot) {
+//           // Map the documents to CartItem objects
+//           var cartItems = snapshot.data!.docs
+//               .map((doc) => Cartitem.fromJson(userId))
+//               .toList();
+//           print('?????????????????????????????????????????${snapshot.data}');
+//           if (!snapshot.hasData) {
+//             return const Center(
+//               child: CircularProgressIndicator(),
+//             );
+//           } else if (snapshot.hasData) {
+//             return ListView.builder(
+//               itemCount: cartItems.length,
+//               itemBuilder: (context, index) {
+//                 print(
+//                     'carrt itemsssssssssssssssssssssssssssssssssssssssssssssssssssssssss4$cartItems');
+//                 return Column(
+//                   children: [
+//                     Image(
+//                       image: NetworkImage(cartItems[index].img),
+//                     ),
+//                     Text(cartItems[index].name),
+//                     Text(cartItems[index].price.toString()),
+//                     Text(cartItems[index].quantity.toString()),
+//                   ],
+//                 );
+//               },
+//             );
+//           } else {
+//             return Text("gfdsdfgdsfgds");
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }
+// import 'package:flutter/material.dart';
+
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:signinfirebase/addcart/cart.dart';
+
+// class CartScreen extends StatelessWidget {
+//   final String userId = 'your_user_id'; // Replace with the actual user's ID
+
+//   Stream<QuerySnapshot<Map<String, dynamic>>> getData() {
+//     Stream<QuerySnapshot<Map<String, dynamic>>> data = FirebaseFirestore
+//         .instance
+//         .collection('carts')
+//         .doc(userId)
+//         .collection('items')
+//         .snapshots();
+//     print('dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$data');
+//     return data;
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Cart'),
+//       ),
+//       body: StreamBuilder<QuerySnapshot>(
+//         stream: getData(),
+//         builder: (context, snapshot) {
+//           if (!snapshot.hasData) {
+//             return const Center(
+//               child: CircularProgressIndicator(),
+//             );
+//           } else if (snapshot.hasData) {
+//             var cartItems = snapshot.data!.docs
+//                 .map((doc) =>
+//                     Cartitem.fromMap(doc.data() as Map<String, dynamic>))
+//                 .toList();
+
+//             return ListView.builder(
+//               itemCount: cartItems.length,
+//               itemBuilder: (context, index) {
+//                 return Column(
+//                   children: [
+//                     Text(cartItems[index].name),
+//                     Text(cartItems[index].price.toString()),
+//                     Text(cartItems[index].quantity.toString()),
+//                   ],
+//                 );
+//               },
+//             );
+//           } else {
+//             return const Text("Something went wrong");
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }
+// import 'package:flutter/material.dart';
+
+// class CartScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: Colors.amber,
+//       ),
+//       body: ListView.builder(
+//         itemCount: 10,
+//         itemBuilder: (context, index) {
+//           return Row(
+//             children: [
+//               Image.asset('assests/images/chikn.png'),
+//               ListTile(
+//                 title: Text('data'),
+//                 leading: Text('data'),
+//               )
+//             ],
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }

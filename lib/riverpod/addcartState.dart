@@ -26,38 +26,23 @@ class CartNotifier extends StateNotifier<CartState> {
   Future<void> addTocart(Cartitem cartitem) async {
     try {
       final firestore = FirebaseFirestore.instance;
-      final cartRef = firestore.collection('carts').doc().collection('items');
-      final cartItem = await cartRef.doc().get();
-      if (cartItem.exists) {
+      final cartRef =
+          firestore.collection('carts').doc('userId').collection('items');
+      final cartDoc = await cartRef.doc(cartitem.productId).get();
+      if (cartDoc.exists) {
         // Item already exists in the cart, so update the quantity
-        int currentQuantity = cartItem['quantity'];
-        cartRef.doc().update({
+        int currentQuantity = cartDoc['quantity'];
+        cartRef.doc(cartitem.productId).update({
           'quantity': currentQuantity + 1,
         });
       } else {
         // Item does not exist in the cart, so create a new cart item
-        cartRef.doc().set(cartitem.copyWith(quantity: 1).toMap());
+        cartRef
+            .doc(cartitem.productId)
+            .set(cartitem.copyWith(quantity: 1).toMap());
       }
     } on FirebaseException catch (e) {
       e.message;
     }
   }
-  // Future<void> setDataToFirestore(Cartitem cartitem) async {
-  //   try {
-  //     FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  //     DocumentReference documentReference =
-  //         firestore.collection('your_collection_name').doc('your_document_id');
-
-  //     Map<String, dynamic> dataToSet = {
-  //       'field_name_1': 'img',
-  //       'field_name_2': 'name',
-  //       'field_name_3': 'pri'
-  //     };
-
-  //     await documentReference.set(dataToSet);
-  //   } on FirebaseException catch (e) {
-  //     e.message;
-  //   }
-  // }
 }

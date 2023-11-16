@@ -48,13 +48,16 @@ class CartLoadedStateWidget extends ConsumerStatefulWidget {
       {super.key,
       //  required this.getImage,
       required this.img,
+      required this.productId,
       required this.name,
-      required this.price});
+      required this.price,
+      required this.quantity});
   // GetImage getImage;
-  dynamic img;
-  dynamic name;
-  dynamic price;
-
+  String img;
+  String name;
+  num price;
+  num quantity;
+  String productId;
   @override
   ConsumerState<CartLoadedStateWidget> createState() =>
       _CartLoadedStateWidget();
@@ -69,9 +72,8 @@ class _CartLoadedStateWidget extends ConsumerState<CartLoadedStateWidget> {
     var height = size.height;
     var width = size.width;
     return Scaffold(
-      // backgroundColor: Colors.greenAccent,
       appBar: AppBar(
-        // automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.greenAccent[400],
         flexibleSpace: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -109,7 +111,8 @@ class _CartLoadedStateWidget extends ConsumerState<CartLoadedStateWidget> {
             Stack(children: [
               Center(
                 child: SizedBox(
-                  child: SizedBox(
+                  child: Container(
+                    decoration: const BoxDecoration(),
                     height: height / 2,
                     width: width / 1,
                     // decoration: BoxDecoration(border: Border.all()),
@@ -165,9 +168,9 @@ class _CartLoadedStateWidget extends ConsumerState<CartLoadedStateWidget> {
               )),
             ),
             const SizedBox(
-              height: 10,
-              width: 10,
-            ),
+                // height: 10,
+                // width: 10,
+                ),
             SizedBox(
                 child: ElevatedButton(
                     onPressed: () {
@@ -180,25 +183,19 @@ class _CartLoadedStateWidget extends ConsumerState<CartLoadedStateWidget> {
                       ref
                           .read(cartProvider.notifier)
                           .addTocart(Cartitem(
-                                  img: 'img',
-                                  name: 'name',
-                                  price: 1,
-                                  quantity: 1)
-                              //  setDataToFirestore(Cartitem(
-                              //      img: 'img', name: 'name', price: 1, quantity: 1)
-                              )
+                            img: widget.img,
+                            name: widget.name,
+                            price: widget.price,
+                            quantity: 1,
+                            productId: widget.productId,
+                          ))
                           .then((value) => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => CartScreen(),
+                                builder: (context) => const CartScreen(),
                               )));
                     },
                     child: const Text('add to cart'))),
-            // const Expanded(
-            //   child: SizedBox(
-            //     height: 30,
-            //   ),
-            // ),
           ],
         ),
       ),
@@ -226,164 +223,3 @@ class CartErrorWidget extends ConsumerWidget {
     return Text(error);
   }
 }
-
-// class DetailScreen extends ConsumerStatefulWidget {
-//   const DetailScreen({super.key, required this.item});
-
-//   final String item;
-
-//   @override
-//   ConsumerState<DetailScreen> createState() => _DetailScreenState();
-// }
-
-// class _DetailScreenState extends ConsumerState<DetailScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     // ignore: unused_local_variable
-//     final cartState = ref.watch(cartProvider.notifier);
-
-//     return Scaffold(
-//       appBar: AppBar(
-//         actions: [
-//           IconButton(
-//               onPressed: () {
-//                 Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                       builder: (context) => CartScreen(),
-//                     ));
-//               },
-//               icon: const Icon(Icons.shopping_basket_outlined))
-//         ],
-//         title: const Text("Detail Screen"),
-//       ),
-//       body: Center(
-//         child: Column(
-//           children: [
-//             Image.network(widget.item),
-//             SizedBox(
-//               height: 20,
-//               width: 20,
-//               child: Text(widget.item.toString(),
-//                   style: const TextStyle(fontSize: 20)),
-//             ),
-//             SizedBox(
-//               height: 20,
-//               width: 20,
-//               child: Text(widget.item.toString(),
-//                   style: const TextStyle(fontSize: 20)),
-//             ),
-//             const SizedBox(
-//               height: 10,
-//               width: 10,
-//             ),
-//             SizedBox(
-//                 child: ElevatedButton(
-//                     onPressed: () {
-//                       ref.read(cartProvider.notifier);
-
-//                       Navigator.push(
-//                           context,
-//                           MaterialPageRoute(
-//                             builder: (context) => CartScreen(),
-//                           ));
-//                     },
-//                     child: const Text('add to cart')))
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-// import 'package:signinfirebase/secreens/cart_screen.dart';
-
-// class DetailScreen extends StatefulWidget {
-//   const DetailScreen({super.key, required this.item});
-//   final String item;
-//   @override
-//   _DetailScreenState createState() => _DetailScreenState();
-// }
-
-// class _DetailScreenState extends State<DetailScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         actions: [
-//           IconButton(
-//               onPressed: () {
-//                 Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                       builder: (context) => CartScreen(),
-//                     ));
-//               },
-//               icon: const Icon(Icons.shopping_basket_outlined))
-//         ],
-//         title: const Text("Detail Screen"),
-//       ),
-//       body: Center(
-//         child: Column(
-//           children: [
-//             Image.network(widget.item),
-//             SizedBox(
-//               height: 20,
-//               width: 20,
-//               child: Text(widget.item.toString(),
-//                   style: const TextStyle(fontSize: 20)),
-//             ),
-//             SizedBox(
-//               height: 20,
-//               width: 20,
-//               child: Text(widget.item.toString(),
-//                   style: const TextStyle(fontSize: 20)),
-//             ),
-//             const SizedBox(
-//               height: 10,
-//               width: 10,
-//             ),
-//             SizedBox(
-//                 child: ElevatedButton(
-//                     onPressed: () {
-//                       setDataToFirestore();
-
-//                       Navigator.push(
-//                           context,
-//                           MaterialPageRoute(
-//                             builder: (context) => CartScreen(),
-//                           ));
-//                     },
-//                     child: const Text('add to cart')))
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// Future<void> setDataToFirestore() async {
-//   try {
-//     // Firestore instance
-//     FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-//     // Reference to the Firestore collection and document where you want to set the data
-//     DocumentReference documentReference =
-//         firestore.collection('your_collection_name').doc('your_document_id');
-
-//     // Data to set (replace 'field_name' with your actual field name)
-//     Map<String, dynamic> dataToSet = {
-//       'field_name_1': 'cartitem',
-
-//       // Add more fields as needed
-//     };
-
-//     // Set the data in Firestore
-//     await documentReference.set(dataToSet);
-
-//     print('Data set in Firestore successfully.');
-//   } catch (e) {
-//     print('Error setting data in Firestore: $e');
-//   }
-// }

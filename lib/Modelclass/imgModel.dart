@@ -6,21 +6,25 @@ class GetImage {
   String img;
   String name;
   num price;
+  String id;
   GetImage({
     required this.img,
     required this.name,
     required this.price,
+    required this.id,
   });
 
   GetImage copyWith({
     String? img,
     String? name,
     num? price,
+    String? id,
   }) {
     return GetImage(
       img: img ?? this.img,
       name: name ?? this.name,
       price: price ?? this.price,
+      id: id ?? this.id,
     );
   }
 
@@ -29,6 +33,7 @@ class GetImage {
       'img': img,
       'name': name,
       'price': price,
+      'id': id,
     };
   }
 
@@ -37,6 +42,7 @@ class GetImage {
       img: map['img'] as String,
       name: map['name'] as String,
       price: map['price'] as num,
+      id: map['id'] as String,
     );
   }
 
@@ -46,15 +52,22 @@ class GetImage {
       GetImage.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'GetImage(img: $img, name: $name, price: $price)';
+  String toString() {
+    return 'GetImage(img: $img, name: $name, price: $price, id: $id)';
+  }
 
   @override
   bool operator ==(covariant GetImage other) {
     if (identical(this, other)) return true;
 
-    return other.img == img && other.name == name && other.price == price;
+    return other.img == img &&
+        other.name == name &&
+        other.price == price &&
+        other.id == id;
   }
 
   @override
-  int get hashCode => img.hashCode ^ name.hashCode ^ price.hashCode;
+  int get hashCode {
+    return img.hashCode ^ name.hashCode ^ price.hashCode ^ id.hashCode;
+  }
 }
