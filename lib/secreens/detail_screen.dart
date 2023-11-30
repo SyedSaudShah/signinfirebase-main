@@ -72,134 +72,163 @@ class _CartLoadedStateWidget extends ConsumerState<CartLoadedStateWidget> {
     var height = size.height;
     var width = size.width;
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.greenAccent[400],
-        flexibleSpace: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-        ),
-        title: const Text("Detail Screen"),
-        titleSpacing: 00.0,
-        centerTitle: true,
-        toolbarHeight: 60.2,
-        toolbarOpacity: 0.8,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25)),
-        ),
-        elevation: 10.00,
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Row(children: [
-              Center(
-                child: Padding(
-                    padding: const EdgeInsets.only(left: 150, top: 10),
-                    child: Text(
-                      widget.name,
-                      style: const TextStyle(
-                          color: Colors.black,
-                          height: 5,
-                          fontSize: 20,
-                          fontStyle: FontStyle.italic),
-                    )),
-              )
-            ]),
-            Stack(children: [
-              Center(
-                child: SizedBox(
-                  child: Container(
-                    decoration: const BoxDecoration(),
-                    height: height / 2,
-                    width: width / 1,
-                    // decoration: BoxDecoration(border: Border.all()),
-                    child: Image.network(
-                      widget.img,
-                      height: height / 2,
-                      width: width / 2,
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-            Container(
-              decoration: const BoxDecoration(),
-              alignment: Alignment.center,
-              child: Center(
-                  child: Text(
-                widget.name,
-                style: const TextStyle(
-                    letterSpacing: 5,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 25),
-              )),
-            ),
-            const SizedBox(
-              height: 10,
-              width: 10,
-            ),
-            Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  // bottomRight: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.white12,
-                    offset: Offset(9, 9),
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
-              alignment: Alignment.center,
-              child: Center(
-                  child: Text(
-                widget.price.toString(),
-                style: const TextStyle(
-                    letterSpacing: 5,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 30),
-              )),
-            ),
-            const SizedBox(
-                // height: 10,
-                // width: 10,
-                ),
-            SizedBox(
-                child: ElevatedButton(
-                    onPressed: () {
-                      ElevatedButton.styleFrom(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.elliptical(10, 40))));
-
-                      ref
-                          .read(cartProvider.notifier)
-                          .addTocart(Cartitem(
-                            img: widget.img,
-                            name: widget.name,
-                            price: widget.price,
-                            quantity: 1,
-                            productId: widget.productId,
-                          ))
-                          .then((value) => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const CartScreen(),
-                              )));
-                    },
-                    child: const Text('add to cart'))),
+        appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CartScreen(),
+                      ));
+                },
+                icon: const Icon(Icons.shopping_bag))
           ],
+          // automaticallyImplyLeading: false,
+          backgroundColor: Colors.greenAccent[400],
+          flexibleSpace: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          title: const Text("Detail Screen"),
+          titleSpacing: 00.0,
+          centerTitle: true,
+          toolbarHeight: 60.2,
+          toolbarOpacity: 0.8,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(25),
+                bottomLeft: Radius.circular(25)),
+          ),
+          elevation: 10.00,
         ),
-      ),
-    );
+        body: Stack(children: [
+          Positioned(
+              top: 00,
+              bottom: 00,
+              right: 00,
+              left: 00,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(40)),
+              )),
+          Positioned(
+              top: 230,
+              bottom: 00,
+              left: 00,
+              right: 00,
+              child: Container(
+                height: height * 1,
+                width: width * 1,
+                decoration: const BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    )),
+              )),
+          Positioned(
+              top: 4,
+              bottom: 350,
+              right: 00,
+              left: 00,
+              child: CircleAvatar(
+                foregroundImage: NetworkImage(widget.img),
+                child: Container(
+                  height: height * 1,
+                  width: width * 1,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.orange, width: width / 5),
+                    // color: Colors.black26,
+                    shape: BoxShape.circle,
+                    // image:
+                    //     DecorationImage(image: NetworkImage(widget.img)
+                    //     )
+                  ),
+                ),
+              )),
+          Positioned(
+            bottom: 100,
+            left: 40,
+            right: 40,
+            top: 500,
+            child: Center(
+              child: Container(
+                  height: height * 1,
+                  width: width * 1,
+                  decoration: const BoxDecoration(),
+                  child: Text(
+                    widget.name,
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontStyle: FontStyle.italic),
+                  )),
+            ),
+          ),
+          Positioned(
+            bottom: 00,
+            left: 40,
+            right: 40,
+            top: 600,
+            child: Center(
+              child: Container(
+                  height: height * 1,
+                  width: width * 1,
+                  decoration: const BoxDecoration(),
+                  child: Text(
+                    widget.price.toString(),
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                        fontStyle: FontStyle.italic),
+                  )),
+            ),
+          ),
+          Positioned(
+            top: 700,
+            bottom: 00,
+            left: 100,
+            right: 100,
+            child: Center(
+              child: InkWell(
+                onTap: () {
+                  ref
+                      .read(cartProvider.notifier)
+                      .addTocart(Cartitem(
+                        img: widget.img,
+                        name: widget.name,
+                        price: widget.price,
+                        quantity: 1,
+                        productId: widget.productId,
+                      ))
+                      .then((value) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CartScreen(),
+                          )));
+                },
+                child: Card(
+                  color: Colors.white,
+                  child: Container(
+                    // height: height * 1,
+                    // width: width * 1,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.transparent)),
+                    child: const Text('Add to cart',
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            height: height * 1,
+            width: width * 1,
+          )
+        ]));
   }
 }
 
@@ -223,3 +252,113 @@ class CartErrorWidget extends ConsumerWidget {
     return Text(error);
   }
 }
+//  Column(
+//           children: [
+//             Row(children: [
+//               Center(
+//                 child: Padding(
+//                     padding: const EdgeInsets.only(left: 150, top: 10),
+//                     child: SizedBox(
+//                       height: height / 5.5,
+//                       child: Text(
+//                         widget.name,
+//                         style: const TextStyle(
+//                             color: Colors.black,
+//                             fontSize: 30,
+//                             fontStyle: FontStyle.italic),
+//                       ),
+//                     )),
+//               )
+//             ]),
+//             Stack(children: [
+//               Center(
+//                 child: SizedBox(
+//                   height: height / 2,
+//                   width: width / 1,
+//                   child: Card(
+//                     color: Colors.green,
+//                     child: Container(
+//                       decoration: const BoxDecoration(),
+//                       height: height / 2,
+//                       width: width / 1,
+//                       // decoration: BoxDecoration(border: Border.all()),
+//                       child: CircleAvatar(
+//                         foregroundImage: NetworkImage(
+//                           widget.img,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ]),
+//             Container(
+//               decoration: const BoxDecoration(),
+//               alignment: Alignment.center,
+//               child: Center(
+//                   child: Text(
+//                 widget.name,
+//                 style: const TextStyle(
+//                     letterSpacing: 5,
+//                     fontStyle: FontStyle.italic,
+//                     fontSize: 25),
+//               )),
+//             ),
+//             const SizedBox(
+//               height: 10,
+//               width: 10,
+//             ),
+//             Container(
+//               decoration: const BoxDecoration(
+//                 color: Colors.white,
+//                 borderRadius: BorderRadius.only(
+//                   topLeft: Radius.circular(50),
+//                   // bottomRight: Radius.circular(50),
+//                   bottomRight: Radius.circular(50),
+//                 ),
+//                 boxShadow: [
+//                   BoxShadow(
+//                     color: Colors.white12,
+//                     offset: Offset(9, 9),
+//                     blurRadius: 10,
+//                   ),
+//                 ],
+//               ),
+//               alignment: Alignment.center,
+//               child: Center(
+//                   child: Text(
+//                 widget.price.toString(),
+//                 style: const TextStyle(
+//                     letterSpacing: 5,
+//                     fontStyle: FontStyle.italic,
+//                     fontSize: 30),
+//               )),
+//             ),
+//             const SizedBox(),
+//             SizedBox(
+//                 child: ElevatedButton(
+//                     onPressed: () {
+//                       ElevatedButton.styleFrom(
+//                           shape: const RoundedRectangleBorder(
+//                               borderRadius: BorderRadius.only(
+//                                   topLeft: Radius.circular(20),
+//                                   topRight: Radius.elliptical(10, 40))));
+
+//                       ref
+//                           .read(cartProvider.notifier)
+//                           .addTocart(Cartitem(
+//                             img: widget.img,
+//                             name: widget.name,
+//                             price: widget.price,
+//                             quantity: 1,
+//                             productId: widget.productId,
+//                           ))
+//                           .then((value) => Navigator.push(
+//                               context,
+//                               MaterialPageRoute(
+//                                 builder: (context) => const CartScreen(),
+//                               )));
+//                     },
+//                     child: const Text('add to cart'))),
+//           ],
+//         ),

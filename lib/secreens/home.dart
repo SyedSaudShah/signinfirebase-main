@@ -67,56 +67,80 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         children: [
                           Center(
+                              child: SizedBox(
+                            height: 140,
+                            width: 130,
                             child: Card(
-                              elevation: 3,
+                              elevation: 50,
                               color: Colors.green,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: CircleAvatar(
-                                  radius: 50,
-                                  child: Image.network(
-                                      fit: BoxFit.cover,
-                                      alignment: const Alignment(20, 20),
-                                      getImage.img),
-                                ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 80,
+                                    width: 70,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                      20,
+                                    )),
+                                    child: CircleAvatar(
+                                      foregroundImage: NetworkImage(
+                                        getImage.img,
+                                      ),
+                                      // radius: 50,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(2),
+                                    child: SizedBox(
+                                      height: 20,
+                                      child: Center(
+                                        child: Text(
+                                          'Product:${getImage.name}',
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            // height: 2,
+                                            color: Colors.black,
+                                            backgroundColor: Colors.black12,
+                                            //  letterSpacing: 1,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationStyle:
+                                                TextDecorationStyle.double,
+                                            decorationColor: Colors.black12,
+                                            decorationThickness: 1.5,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(2),
+                                    child: SizedBox(
+                                      height: 20,
+                                      child: Center(
+                                        child: Text(
+                                          'Rs:${getImage.price}',
+                                          style: const TextStyle(
+                                            fontSize: 15,
+
+                                            color: Colors.black,
+                                            backgroundColor: Colors.black12,
+                                            //letterSpacing: 1,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationStyle:
+                                                TextDecorationStyle.double,
+                                            decorationColor: Colors.black12,
+                                            decorationThickness: 1.5,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(2),
-                            child: Text(
-                              'Product:${getImage.name}',
-                              style: const TextStyle(
-                                // fontSize: 18,
-                                // height: 2,
-                                color: Colors.black,
-                                //  backgroundColor: Colors.black12,
-                                letterSpacing: 1,
-                                //   decoration: TextDecoration.underline,
-                                // decorationStyle: TextDecorationStyle.double,
-                                decorationColor: Colors.red,
-                                //  decorationThickness: 1.5,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(2),
-                            child: Text(
-                              'Rs:${getImage.price}',
-                              style: const TextStyle(
-                                fontSize: 18,
-                                //height: 2,
-                                color: Colors.black,
-                                //   backgroundColor: Colors.black12,
-                                letterSpacing: 1,
-                                // decoration: TextDecoration.underline,
-                                // decorationStyle: TextDecorationStyle.double,
-                                decorationColor: Colors.black,
-                                //  decorationThickness: 1.5,
-                              ),
-                            ),
-                          ),
+                          ))
                         ],
                       ),
                     );
