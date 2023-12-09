@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:signinfirebase/riverpod/provider.dart';
@@ -70,6 +69,7 @@ class RegisterUserPage extends ConsumerWidget {
     }
 
     // var width = MediaQuery.of(context).size.width;
+
     var height = MediaQuery.of(context).size.height;
 
     return SafeArea(
@@ -131,40 +131,46 @@ class RegisterUserPage extends ConsumerWidget {
                         SizedBox(
                           height: height / 7.0,
                         ),
-                        AnimatedTextKit(
-                          animatedTexts: [
-                            RotateAnimatedText('Signup',
-                                textStyle: const TextStyle(
-                                  letterSpacing: 3,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.orange,
-                                )),
-                            RotateAnimatedText('Food items',
-                                textStyle: const TextStyle(
-                                    letterSpacing: 3,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.orange)),
-                            RotateAnimatedText(
-                              'Yummy Food',
-                              textStyle: const TextStyle(
-                                  letterSpacing: 3,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.orange),
-                            ),
-                          ],
-                          isRepeatingAnimation: true,
-                          totalRepeatCount: 10,
-                          pause: const Duration(milliseconds: 1000),
-                        ),
+                        // AnimatedTextKit(
+                        //   animatedTexts: [
+                        //     RotateAnimatedText('Signup',
+                        //         textStyle: const TextStyle(
+                        //           letterSpacing: 3,
+                        //           fontSize: 30,
+                        //           fontWeight: FontWeight.normal,
+                        //           color: Colors.orange,
+                        //         )),
+                        //     RotateAnimatedText('Food items',
+                        //         textStyle: const TextStyle(
+                        //             letterSpacing: 3,
+                        //             fontSize: 30,
+                        //             fontWeight: FontWeight.normal,
+                        //             color: Colors.orange)),
+                        //     RotateAnimatedText(
+                        //       'Yummy Food',
+                        //       textStyle: const TextStyle(
+                        //           letterSpacing: 3,
+                        //           fontSize: 30,
+                        //           fontWeight: FontWeight.normal,
+                        //           color: Colors.orange),
+                        //     ),
+                        //   ],
+                        //   isRepeatingAnimation: true,
+                        //   totalRepeatCount: 10,
+                        //   pause: const Duration(milliseconds: 1000),
+                        // ),
                         Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(height / 2)),
+                              borderRadius: BorderRadius.circular(height / 1)),
                           height: 50,
                         ),
                         TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter your name';
+                            }
+                            return null;
+                          },
                           keyboardType: TextInputType.name,
                           style: const TextStyle(
                             fontSize: 22,
@@ -181,6 +187,12 @@ class RegisterUserPage extends ConsumerWidget {
                           height: 10,
                         ),
                         TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter your LastName';
+                            }
+                            return null;
+                          },
                           keyboardType: TextInputType.name,
                           style: const TextStyle(
                             fontSize: 22,
@@ -222,8 +234,10 @@ class RegisterUserPage extends ConsumerWidget {
                         ),
                         TextFormField(
                           validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter a valid password!';
+                            if (value!.isEmpty ||
+                                !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(value)) {
+                              return 'Enter a valid Password!';
                             }
                             return null;
                           },

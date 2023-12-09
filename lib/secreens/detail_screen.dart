@@ -79,7 +79,7 @@ class _CartLoadedStateWidget extends ConsumerState<CartLoadedStateWidget> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const CartScreen(),
+                        builder: (context) => OrderLoadedState(),
                       ));
                 },
                 icon: const Icon(Icons.shopping_bag))
@@ -206,7 +206,7 @@ class _CartLoadedStateWidget extends ConsumerState<CartLoadedStateWidget> {
                       .then((value) => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const CartScreen(),
+                            builder: (context) => OrderLoadedState(),
                           )));
                 },
                 child: Card(
